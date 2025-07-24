@@ -1,15 +1,3 @@
-Below is a **complete `README.md`** that:
-
-* uses plain text (no emojis)
-* points to the screenshots you already have (`Screenshot from 2025‑07‑24 15‑59‑46.png`, `Screenshot from 2025‑07‑24 16‑12‑00.png`, `Screenshot from 2025‑07‑24 16‑12‑34.png`)
-* includes a `requirements.txt` snippet for pip/conda installs
-* keeps the markdown layout valid (code‑fenced blocks, tables properly closed, etc.)
-
-Copy the block exactly to `Rosmann_Pharmacy_prediction/README.md`.
-
----
-
-```markdown
 # Rossmann Pharmaceuticals – 6‑Week Sales Forecaster
 
 This repository contains an end‑to‑end pipeline for predicting daily sales for 1,115 Rossmann drugstores.  
