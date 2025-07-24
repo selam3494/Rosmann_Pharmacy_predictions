@@ -122,18 +122,6 @@ Provided as‑is for educational purposes. Rossmann dataset © Kaggle competitio
 
 ````
 
----
-
-### Where to place the screenshots
-
-They’re already in the repo root with long names. Either:
-
-* **Option A**: leave them where they are – the relative paths in the README (`Screenshot from …`) will resolve correctly on GitHub.
-
-* **Option B** (cleaner): move them into a folder, e.g. `docs/`, and update the `src=` paths accordingly.
-
----
-
 ### `requirements.txt`
 
 A minimal file has been included in the README. Save that text to `requirements.txt` at repo root so others can run:
