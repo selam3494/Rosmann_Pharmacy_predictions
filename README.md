@@ -1,18 +1,23 @@
-Below is a **drop‑in `README.md`** you can copy to the root of **`Rosmann_Pharmacy_prediction/`**.
-It walks a new user from environment setup → training → prediction → Streamlit UI, and it embeds the three screenshots you showed.
+Below is a **complete `README.md`** that:
+
+* uses plain text (no emojis)
+* points to the screenshots you already have (`Screenshot from 2025‑07‑24 15‑59‑46.png`, `Screenshot from 2025‑07‑24 16‑12‑00.png`, `Screenshot from 2025‑07‑24 16‑12‑34.png`)
+* includes a `requirements.txt` snippet for pip/conda installs
+* keeps the markdown layout valid (code‑fenced blocks, tables properly closed, etc.)
+
+Copy the block exactly to `Rosmann_Pharmacy_prediction/README.md`.
 
 ---
 
 ```markdown
-# 💊 Rossmann Pharmaceuticals – 6‑Week Sales Forecaster
+# Rossmann Pharmaceuticals – 6‑Week Sales Forecaster
 
-End‑to‑end repo for predicting daily sales of 1 115 Rossmann drugstores
-using LightGBM.  
-You can:
+This repository contains an end‑to‑end pipeline for predicting daily sales for 1,115 Rossmann drugstores.  
+What you can do:
 
-1. **Train** a model from the original Kaggle CSVs.  
-2. **Generate** a submission file (`submission.csv`).  
-3. **Explore** forecasts with a Streamlit dashboard.
+1. **Train** a LightGBM model on the original Kaggle dataset.  
+2. **Generate** a `submission.csv` for Kaggle scoring.  
+3. **Explore** forecasts interactively with a Streamlit dashboard.
 
 ---
 
@@ -21,9 +26,9 @@ You can:
 ```
 
 Rosmann\_Pharmacy\_prediction/
-├── data/                 ← train.csv, test.csv, store.csv
-├── models/               ← rossmann\_lgbm.pkl (created by training)
-├── outputs/              ← submission.csv (created by predict.py)
+├── data/                 # train.csv, test.csv, store.csv
+├── models/               # rossmann\_lgbm.pkl (created by training)
+├── outputs/              # submission.csv (created by predict.py)
 ├── path\_utils.py
 ├── feature\_utils.py
 ├── clean\_and\_train.py
@@ -32,110 +37,121 @@ Rosmann\_Pharmacy\_prediction/
 
 ````
 
-(*`models/` and `outputs/` are auto‑created if missing.*)
+(`models/` and `outputs/` are created automatically if missing.)
 
 ---
 
-## 1. Set up the environment
+## 1  Set up the environment
 
 ```bash
 conda create -n rossmann python=3.10 -y
 conda activate rossmann
-pip install pandas scikit-learn lightgbm streamlit joblib
+pip install -r requirements.txt
 ````
+
+<details>
+<summary><code>requirements.txt</code> content</summary>
+
+```text
+pandas>=2.1.0
+scikit-learn>=1.3.0
+lightgbm>=4.0.0
+streamlit>=1.34.0
+joblib>=1.3.0
+```
+
+</details>
 
 ---
 
-## 2. Train the model
+## 2  Train the model
 
 ```bash
-# run from repo root
+# run from the repo root
 python clean_and_train.py
 ```
 
-The script:
+The script
 
-* merges **train.csv** + **store.csv**
-* engineers calendar / promo features
+* merges **train.csv** and **store.csv**
+* engineers calendar/promo features
 * fits LightGBM
-* writes `models/rossmann_lgbm.pkl`
+* saves `models/rossmann_lgbm.pkl`
 
-<p align="center">
-  <img src="docs/training_rmspe.png" width="600">
-</p>
+Screenshot of a successful run:
 
-*(RMSPE \~ 0.128 on a CPU laptop – your log will look similar.)*
+<img src="Screenshot from 2025-07-24 15-59-46.png" width="700">
 
 ---
 
-## 3. Build a Kaggle submission (optional)
+## 3  Create a Kaggle submission (optional)
 
 ```bash
 python predict.py
 ```
 
-Creates `models/outputs/submission.csv` – ready to upload.
+A ready‑to‑upload `submission.csv` appears in `models/outputs/`.
 
 ---
 
-## 🌐 4. Launch the dashboard
+## 4  Launch the Streamlit dashboard
 
 ```bash
 streamlit run app.py
 ```
 
-Open the URL Streamlit prints (default **[http://localhost:8501](http://localhost:8501)**) and you’ll see:
+Streamlit typically starts at [http://localhost:8501](http://localhost:8501).
+What you’ll see:
 
-| Batch upload & what‑if sidebar             | Blank main panel (waiting for a batch file) | Example single‑store prediction                 |
-| ------------------------------------------ | ------------------------------------------- | ----------------------------------------------- |
-| <img src="docs/sidebar.png"   width="220"> | <img src="docs/blank_main.png" width="220"> | <img src="docs/predicted_4200.png" width="220"> |
+| Sidebar (batch + what‑if)                                       | Blank main panel                                                | Example single‑store result     |
+| --------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------- |
+| <img src="Screenshot from 2025-07-24 16-12-00.png" width="230"> | <img src="Screenshot from 2025-07-24 16-12-34.png" width="230"> | *(prediction shown in sidebar)* |
 
-### 4‑a. Batch mode
+### 4a  Batch mode
 
-Upload a CSV in the **test.csv** schema (same columns, no `Sales`).
-Download the auto‑generated `submission.csv`.
+Upload a CSV that follows the **test.csv** schema (same columns minus `Sales`).
+Download the generated `submission.csv`.
 
-### 4‑b. Single‑day what‑if
+### 4b  Single‑day what‑if
 
-Pick a store, date, promo / holiday flags – get an instant forecast.
-
----
-
-## ❓ Troubleshooting
-
-| Problem                                 | Fix                                                                                                                                                                               |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `FileNotFoundError ... data/*.csv`      | Make sure **train.csv**, **test.csv**, **store.csv** are inside `data/`.                                                                                                          |
-| `LightGBMError: number of features ...` | You trained on different columns; re‑run `clean_and_train.py` **or** ensure your input file contains the same 22 features (the app now auto‑adds any missing columns with zeros). |
-| `ModuleNotFoundError: lightgbm`         | `pip install lightgbm` or use Python ≤3.10 where wheels are available.                                                                                                            |
+Choose store, date, and flags (promo, holiday) to see an instant forecast.
 
 ---
 
-## 📜 License
+## Troubleshooting
 
-This repo is provided **as‑is** for educational purposes. Rossmann dataset © Kaggle competition authors.
-
-```
+| Problem                                 | Fix                                                                                                                    |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `FileNotFoundError ... data/*.csv`      | Ensure **train.csv**, **test.csv**, **store.csv** are in the `data/` folder.                                           |
+| `LightGBMError: number of features ...` | Retrain with `clean_and_train.py`, or keep input columns consistent; the app now auto‑adds missing columns with zeros. |
+| `ModuleNotFoundError: lightgbm`         | `pip install lightgbm` or use Python ≤ 3.10 where wheels are available.                                                |
 
 ---
 
-### Where to put the images
+## License
 
-1. Create a folder `docs/` at repo root.
-2. Save the three screenshots there with the exact names used above:
+Provided as‑is for educational purposes. Rossmann dataset © Kaggle competition authors.
 
-```
+````
 
-docs/
-├── training\_rmspe.png      ← terminal training log
-├── sidebar.png             ← Streamlit sidebar screenshot
-├── blank\_main.png          ← empty main screen
-└── predicted\_4200.png      ← single‑day forecast example
+---
 
-```
+### Where to place the screenshots
 
-*(Rename your PNGs or adjust the `<img src="...">` paths if you want different filenames.)*
+They’re already in the repo root with long names. Either:
 
-After that, GitHub will render the README exactly like the preview above.
-::contentReference[oaicite:0]{index=0}
-```
+* **Option A**: leave them where they are – the relative paths in the README (`Screenshot from …`) will resolve correctly on GitHub.
+
+* **Option B** (cleaner): move them into a folder, e.g. `docs/`, and update the `src=` paths accordingly.
+
+---
+
+### `requirements.txt`
+
+A minimal file has been included in the README. Save that text to `requirements.txt` at repo root so others can run:
+
+```bash
+pip install -r requirements.txt
+````
+
+Everything is now documented and reproducible.
